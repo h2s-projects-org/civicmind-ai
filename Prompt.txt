@@ -1,0 +1,643 @@
+You are a Senior Principal Software Architect, Staff Full-Stack Engineer, AI Engineer, Cloud Architect, UI/UX Designer, DevOps Engineer, and Data Engineer.
+
+Design and build a production-quality application called **CivicMind AI**.
+
+**CivicMind AI** is an AI-Powered Community Decision Intelligence Platform that helps governments, municipalities, NGOs, educational institutions, and community organizations transform fragmented operational data into actionable intelligence using Google Cloud, Generative AI, NVIDIA GPU acceleration, and modern web technologies.
+
+This is not a simple dashboard.
+
+The application should function as an intelligent decision-support platform capable of understanding data, generating insights, predicting future outcomes, detecting anomalies, explaining trends, and recommending actions through conversational AI.
+
+---
+
+# Primary Goal
+
+Enable decision-makers to upload or connect multiple datasets and instantly receive:
+
+* AI-powered insights
+* Interactive analytics
+* Predictive forecasting
+* Risk scoring
+* Natural language querying
+* AI recommendations
+* Executive summaries
+* Real-time dashboards
+
+The system should reduce the time required to make data-driven decisions from hours to minutes.
+
+---
+
+# Core Problem Statement
+
+Communities generate enormous volumes of structured and unstructured data from transportation, environmental monitoring, healthcare, utilities, public safety, citizen engagement, tourism, education, and emergency services.
+
+Most organizations struggle because:
+
+* Data exists in silos.
+* Reports are manually prepared.
+* Dashboards only explain historical events.
+* There is limited predictive intelligence.
+* Decision-makers lack technical expertise.
+* Insights arrive too late.
+
+CivicMind AI solves this by creating an AI-powered Decision Intelligence Platform that unifies data ingestion, accelerated analytics, Generative AI reasoning, forecasting, and workflow automation into one platform.
+
+---
+
+# Technical Stack
+
+## Frontend
+
+* React 19
+* TypeScript
+* Vite
+* Tailwind CSS
+* shadcn/ui
+* TanStack Query
+* React Router
+* React Hook Form
+* Zod
+* Framer Motion
+* Chart.js
+* Map visualization
+* Responsive design
+* Dark/Light mode
+
+---
+
+## Backend
+
+Python
+
+Framework:
+
+FastAPI
+
+Modules:
+
+* Authentication
+* API Gateway
+* Data Ingestion
+* ETL
+* AI Engine
+* Recommendation Engine
+* Forecasting
+* Notification Service
+* Workflow Engine
+* Report Generator
+
+---
+
+## Database
+
+Google BigQuery
+
+Additional database if required:
+
+PostgreSQL
+
+Caching:
+
+Redis
+
+---
+
+## Storage
+
+Google Cloud Storage
+
+---
+
+## AI
+
+Google Vertex AI
+
+Gemini
+
+Support:
+
+* Prompt Engineering
+* RAG
+* Function Calling
+* Structured Output
+* Tool Calling
+* Agent-based reasoning
+
+---
+
+## Google Cloud Services
+
+Use wherever appropriate:
+
+* BigQuery
+* Cloud Storage
+* Cloud Run
+* Cloud Functions
+* Vertex AI
+* Gemini
+* Looker
+* Secret Manager
+* Cloud Scheduler
+* Pub/Sub
+* IAM
+
+---
+
+## NVIDIA Stack
+
+Use GPU acceleration for analytics.
+
+Implement using:
+
+* RAPIDS
+* cuDF
+* cudf.pandas
+
+Design the application so GPU acceleration is optional and automatically falls back to Pandas when GPUs are unavailable.
+
+---
+
+# Application Modules
+
+## 1. Authentication
+
+Support
+
+* Google Login
+* Email Login
+* Role-Based Access Control
+
+Roles:
+
+* Super Admin
+* Organization Admin
+* Analyst
+* Decision Maker
+* Viewer
+
+---
+
+## 2. Organization Management
+
+Each organization should have:
+
+* Name
+* Type
+* Region
+* Departments
+* Users
+
+Support multi-tenancy.
+
+---
+
+## 3. Dataset Management
+
+Allow users to upload:
+
+* CSV
+* Excel
+* JSON
+
+Future-ready connectors:
+
+* APIs
+* IoT Streams
+* Public Open Data
+* BigQuery datasets
+
+Metadata:
+
+* Source
+* Owner
+* Upload Time
+* Schema
+* Data Quality Score
+
+---
+
+## 4. Data Cleaning Engine
+
+Automatically perform:
+
+* Missing value detection
+* Duplicate removal
+* Outlier detection
+* Invalid data correction
+* Date normalization
+* Data profiling
+* Column inference
+* Schema validation
+
+Display before/after statistics.
+
+---
+
+## 5. Accelerated Analytics Engine
+
+Implement analytics using:
+
+GPU:
+
+* cuDF
+
+Fallback:
+
+* Pandas
+
+Benchmark:
+
+Display
+
+Processing Time
+
+Memory Usage
+
+Acceleration %
+
+Rows Processed
+
+---
+
+## 6. Data Warehouse
+
+Store transformed datasets inside BigQuery.
+
+Automatically create datasets and tables.
+
+Support versioning.
+
+---
+
+## 7. AI Decision Intelligence
+
+This is the core of CivicMind AI.
+
+Users should ask questions like:
+
+"Which district has the highest environmental risk?"
+
+"What caused the increase in complaints?"
+
+"Predict next month's emergency calls."
+
+"Where should additional resources be allocated?"
+
+"Which departments require immediate attention?"
+
+Gemini should:
+
+* Analyze
+* Reason
+* Explain
+* Recommend
+
+Return structured responses.
+
+---
+
+## 8. Predictive Analytics
+
+Support forecasting for:
+
+* Citizen complaints
+* Traffic
+* Healthcare demand
+* Utility consumption
+* Emergency response
+* Environmental indicators
+
+Use explainable models.
+
+---
+
+## 9. Risk Scoring
+
+Generate scores from 0–100.
+
+Categories:
+
+* Operational Risk
+* Environmental Risk
+* Infrastructure Risk
+* Public Safety Risk
+* Resource Risk
+
+Explain why each score was assigned.
+
+---
+
+## 10. Recommendation Engine
+
+Instead of only showing charts, generate recommendations.
+
+Example:
+
+"Increase waste collection in District A."
+
+"Deploy additional ambulances."
+
+"Inspect power infrastructure."
+
+"Increase bus frequency."
+
+Each recommendation should include:
+
+* Confidence
+* Priority
+* Impact
+* Estimated Benefit
+
+---
+
+## 11. Conversational AI
+
+Gemini-powered assistant.
+
+Capabilities:
+
+* Understand uploaded datasets.
+* Query BigQuery.
+* Generate SQL.
+* Explain results.
+* Create visualizations.
+* Summarize reports.
+
+---
+
+## 12. Dashboard
+
+Build executive dashboards.
+
+Pages:
+
+Overview
+
+Operations
+
+Forecasting
+
+Risk
+
+AI Insights
+
+Recommendations
+
+Reports
+
+System Health
+
+Administration
+
+---
+
+## 13. Visualization
+
+Use:
+
+Chart.js
+
+Maps
+
+Heatmaps
+
+KPIs
+
+Trend Lines
+
+Forecast Charts
+
+Scatter Plots
+
+Geospatial Analysis
+
+Network Graphs
+
+---
+
+## 14. Report Generation
+
+Generate
+
+PDF
+
+PowerPoint
+
+Excel
+
+AI Executive Summary
+
+Schedule reports.
+
+---
+
+## 15. Notifications
+
+Support:
+
+Email
+
+SMS (future)
+
+Push Notifications
+
+AI Alerts
+
+Threshold-based alerts
+
+---
+
+## 16. Workflow Automation
+
+Allow users to:
+
+Assign tasks
+
+Track recommendations
+
+Approve actions
+
+Close incidents
+
+Maintain audit logs.
+
+---
+
+# AI Architecture
+
+Implement Retrieval-Augmented Generation (RAG):
+
+User Question
+
+↓
+
+Gemini
+
+↓
+
+BigQuery Retrieval
+
+↓
+
+Context Builder
+
+↓
+
+Prompt Orchestration
+
+↓
+
+Reasoning
+
+↓
+
+Recommendations
+
+↓
+
+Dashboard
+
+---
+
+# Non-Functional Requirements
+
+Production-quality code.
+
+Clean Architecture.
+
+DDD-inspired modular design.
+
+Repository pattern.
+
+Dependency Injection.
+
+SOLID principles.
+
+Comprehensive logging.
+
+Centralized exception handling.
+
+Unit tests.
+
+Integration tests.
+
+Docker support.
+
+Environment configuration.
+
+Secrets management.
+
+API versioning.
+
+OpenAPI documentation.
+
+Accessibility (WCAG).
+
+Responsive UI.
+
+Performance optimization.
+
+Security best practices.
+
+---
+
+# UI/UX Requirements
+
+Modern enterprise interface.
+
+Glassmorphism with subtle effects.
+
+Professional color palette.
+
+Smooth animations.
+
+Card-based dashboard.
+
+Interactive maps.
+
+Responsive layout.
+
+Beautiful onboarding.
+
+AI chat sidebar.
+
+Drag-and-drop dataset upload.
+
+Real-time progress indicators.
+
+---
+
+# Folder Structure
+
+Generate a scalable monorepo:
+
+/apps
+/web
+/api
+
+/packages
+/ui
+/shared
+/types
+
+/services
+/analytics
+/ai
+/forecasting
+/recommendations
+
+/infrastructure
+
+/docs
+
+/scripts
+
+---
+
+# Deliverables
+
+Generate the project incrementally.
+
+Phase 1
+
+* Project architecture
+* Folder structure
+* Technology setup
+
+Phase 2
+
+* Backend APIs
+* Authentication
+* BigQuery integration
+
+Phase 3
+
+* Data ingestion
+* Data cleaning
+* GPU acceleration
+
+Phase 4
+
+* AI assistant
+* RAG
+* Gemini integration
+
+Phase 5
+
+* Dashboards
+* Visualizations
+* Forecasting
+
+Phase 6
+
+* Recommendations
+* Reporting
+* Notifications
+
+Phase 7
+
+* Testing
+* Optimization
+* Deployment
+
+Do not generate placeholder implementations. Build production-ready, modular, well-documented code with explanatory comments where appropriate. Before implementing each phase, explain the architecture and design decisions, then generate the complete code, configuration, tests, and documentation for that phase. Ensure every component is extensible, maintainable, secure, and cloud-native.

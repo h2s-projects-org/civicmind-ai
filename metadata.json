@@ -1,0 +1,8 @@
+{
+  "name": "CivicMind AI",
+  "description": "An AI-Powered Community Decision Intelligence Platform that unifies community operational datasets, accelerated analytics, predictive forecasting, risk scoring, and Gemini-driven conversational intelligence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
