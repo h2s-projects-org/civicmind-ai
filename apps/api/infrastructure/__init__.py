@@ -1,0 +1,1 @@
+# CivicMind AI — Infrastructure modules

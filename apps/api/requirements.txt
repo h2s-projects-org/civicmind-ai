@@ -1,0 +1,45 @@
+# CivicMind AI — Python Backend Dependencies
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ─── Core Framework ─────────────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+python-multipart>=0.0.18
+
+# ─── Authentication ─────────────────────────────────────────────────────
+passlib[bcrypt]>=1.7.4
+PyJWT>=2.10.0
+python-jose[cryptography]>=3.4.0
+email-validator>=2.2.0
+
+# ─── Database — PostgreSQL ──────────────────────────────────────────────
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30.0
+alembic>=1.14.0
+
+# ─── Caching — Redis ────────────────────────────────────────────────────
+redis>=5.2.0
+
+# ─── Data Processing ────────────────────────────────────────────────────
+pandas>=2.2.0
+numpy>=2.1.0
+
+# ─── Google Cloud Services ──────────────────────────────────────────────
+google-genai>=1.0.0
+# google-cloud-bigquery>=3.27.0      # Uncomment when GCP is configured
+# google-cloud-storage>=2.19.0       # Uncomment when GCP is configured
+# google-cloud-secret-manager>=2.21.0  # Uncomment when GCP is configured
+
+# ─── NVIDIA RAPIDS (GPU Acceleration) ──────────────────────────────────
+# cudf-cu12>=24.12.0  # Uncomment when NVIDIA GPU is available
+# Requires CUDA 12.x runtime — see https://rapids.ai/install
+
+# ─── Testing ────────────────────────────────────────────────────────────
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+httpx>=0.28.0
+
+# ─── Utilities ──────────────────────────────────────────────────────────
+python-dotenv>=1.0.1
