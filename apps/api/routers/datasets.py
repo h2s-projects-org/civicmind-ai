@@ -16,7 +16,13 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, status
 
 from apps.api.services.cleaning import clean_dataset
-from apps.api.services.analytics import benchmark_query, is_gpu_available
+from apps.api.services.analytics import (
+    benchmark_query,
+    is_gpu_available,
+    run_bigquery_aggregation,
+    upload_dataset_to_bigquery,
+    upload_dataset_to_gcs,
+)
 from apps.api.services.forecasting import generate_forecast
 from apps.api.services.risk import calculate_risk_scores
 from apps.api.services import ai as ai_service
@@ -271,11 +277,23 @@ async def create_dataset(payload: dict[str, Any]):
         "isCleaned": False,
     }
 
+    # ── Cloud Storage: persist raw dataset to GCS ───────────────────────
+    gcs_uri = upload_dataset_to_gcs(dataset_id, name, rows)
+    if gcs_uri:
+        new_dataset["gcsUri"] = gcs_uri
+
+    # ── BigQuery: load dataset into warehouse table ─────────────────────
+    bq_table_id = upload_dataset_to_bigquery(dataset_id, name, rows)
+    if bq_table_id:
+        new_dataset["bqTableId"] = bq_table_id
+
     _datasets.append(new_dataset)
     _log_action(
         new_dataset["owner"],
         "Dataset Ingested",
-        f"Uploaded dataset '{name}' with {len(rows)} rows.",
+        f"Uploaded dataset '{name}' with {len(rows)} rows."
+        + (f" [GCS: {gcs_uri}]" if gcs_uri else "")
+        + (f" [BQ: {bq_table_id}]" if bq_table_id else ""),
     )
 
     return new_dataset
@@ -333,7 +351,12 @@ async def clean_dataset_endpoint(dataset_id: str):
 
 @router.post("/datasets/{dataset_id}/query")
 async def run_benchmark_query(dataset_id: str, payload: dict[str, Any]):
-    """Execute an aggregation query with GPU benchmark comparison."""
+    """Execute an aggregation query with GPU benchmark comparison.
+
+    If the dataset has been loaded into BigQuery (bqTableId is set),
+    also runs the query against BigQuery and includes warehouse
+    metrics in the response.
+    """
     ds = _find_dataset_or_404(dataset_id)
 
     group_by_col = payload.get("groupByCol")
@@ -346,7 +369,18 @@ async def run_benchmark_query(dataset_id: str, payload: dict[str, Any]):
             detail="groupByCol and aggregateCol parameters are required",
         )
 
+    # Run local pandas/cudf benchmark
     result = benchmark_query(ds["rows"], group_by_col, aggregate_col, operation)
+
+    # If dataset is in BigQuery, also run the warehouse query
+    bq_table_id = ds.get("bqTableId")
+    if bq_table_id:
+        bq_result = run_bigquery_aggregation(
+            bq_table_id, group_by_col, aggregate_col, operation
+        )
+        if bq_result:
+            result["bigQueryBenchmark"] = bq_result
+
     return result
 
 
@@ -591,12 +625,24 @@ async def chat(payload: dict[str, Any]):
 
 @router.get("/system/health")
 async def system_health():
-    """Return system health status including GPU availability."""
+    """Return system health status including GPU, BigQuery, and GCS availability."""
+    from apps.api.infrastructure.database import get_bigquery_client, get_gcs_client
+    from apps.api.config import get_settings
+
+    _settings = get_settings()
+    bq_client = get_bigquery_client()
+    gcs_client = get_gcs_client()
+
     return {
         "status": "operational",
         "gpuAvailable": is_gpu_available(),
         "gpuType": "NVIDIA L4" if is_gpu_available() else None,
         "cudfEnabled": is_gpu_available(),
+        "bigqueryConnected": bq_client is not None,
+        "bigqueryDataset": _settings.gcp_bigquery_dataset if bq_client else None,
+        "gcsConnected": gcs_client is not None,
+        "gcsBucket": _settings.gcp_storage_bucket if gcs_client else None,
+        "geminiConfigured": bool(_settings.gemini_api_key),
         "datasetsLoaded": len(_datasets),
         "recommendationsActive": len(_recommendations),
         "alertsActive": len([a for a in _alerts if a.get("status") == "Active"]),

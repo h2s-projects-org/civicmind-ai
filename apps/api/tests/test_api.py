@@ -135,8 +135,13 @@ async def test_benchmark_query(client):
     assert response.status_code == 200
     data = response.json()
     assert "processingTimeMs" in data
+    assert "gpuProcessingTimeMs" in data
+    assert "benchmarkMethod" in data
+    assert "isEstimated" in data
     assert "results" in data
     assert len(data["results"]) > 0
+    # Verify CPU time >= GPU time (or estimated GPU time)
+    assert data["processingTimeMs"] >= data["gpuProcessingTimeMs"]
 
 
 @pytest.mark.asyncio
