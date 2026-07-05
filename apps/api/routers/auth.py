@@ -32,15 +32,16 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=Fals
 # ─── Password Hashing ──────────────────────────────────────────────────────
 
 try:
-    from passlib.context import CryptContext
-
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    import bcrypt
 
     def hash_password(password: str) -> str:
-        return pwd_context.hash(password)
+        # bcrypt 5.x requires bytes and has a 72-byte limit
+        pw_bytes = password.encode("utf-8")[:72]
+        return bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
 
     def verify_password(plain: str, hashed: str) -> bool:
-        return pwd_context.verify(plain, hashed)
+        pw_bytes = plain.encode("utf-8")[:72]
+        return bcrypt.checkpw(pw_bytes, hashed.encode("utf-8"))
 except ImportError:
     import hashlib
 

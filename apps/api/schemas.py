@@ -93,7 +93,7 @@ class DatasetResponse(BaseModel):
     owner: str
     upload_time: str
     rows: list[dict[str, Any]]
-    schema: list[ColumnSchema]
+    columns: list[ColumnSchema] = Field(default_factory=list, alias="schema")
     quality_score: int
     is_cleaned: bool
     cleaning_stats: Optional[CleaningStatsResponse] = None
