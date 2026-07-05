@@ -21,4 +21,12 @@ source apps/api/.venv/bin/activate
 PYTHONPATH=. python -m pytest apps/api/tests/ -v
 
 
+To deploy to GCP Cloud Run, you can run this command from the project root:
+gcloud run deploy civicmind-ai \
+    --source . \
+    --region us-central1 \
+    --allow-unauthenticated \
+    --port 8080 \
+    --set-env-vars="ENVIRONMENT=production,DEBUG=false"
+
 

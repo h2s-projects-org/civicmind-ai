@@ -143,6 +143,47 @@ app.include_router(auth.router)
 app.include_router(datasets.router)
 
 
+# ─── Serve Built Frontend Static Files in Production ────────────────────────
+
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Check for built frontend static files directory
+static_dir = os.path.abspath("static")
+if os.path.exists(static_dir):
+    logger.info("✅ Built frontend directory found at %s — mounting assets", static_dir)
+    assets_dir = os.path.join(static_dir, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    # Serve favicon, manifest, etc. directly if they exist at static root
+    # Fallback route to serve index.html for React SPA client-side routing
+    @app.get("/{fallback_path:path}", include_in_schema=False)
+    async def frontend_fallback(fallback_path: str):
+        # Exclude API endpoints, docs, and schema definitions from fallback
+        if (
+            fallback_path.startswith("api")
+            or fallback_path.startswith("docs")
+            or fallback_path.startswith("redoc")
+            or fallback_path.startswith("openapi.json")
+        ):
+            return JSONResponse(status_code=404, content={"detail": "Not found"})
+
+        # Serve static file directly if it exists at root level (e.g. favicon.svg)
+        file_path = os.path.join(static_dir, fallback_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+
+        # Fallback to SPA index.html
+        index_file = os.path.join(static_dir, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+        return JSONResponse(status_code=404, content={"detail": "Frontend assets not found"})
+else:
+    logger.info("ℹ️  No static frontend directory found — API-only mode active")
+
+
 # ─── Root Health Check ──────────────────────────────────────────────────────
 
 @app.get("/", tags=["Health"])
@@ -153,3 +194,4 @@ async def root():
         "version": settings.app_version,
         "status": "operational",
     }
+
